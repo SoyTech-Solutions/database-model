@@ -6,7 +6,7 @@ INSERT INTO prospect VALUE
     
 -- lead capturado convertido -> cliente = empresa
 INSERT INTO empresa VALUE
-	(DEFAULT,'SPTech School','Educare Tecnologia da Informacao S.a','11900001111','educare.tecnologia@company.com','07165496000100','#Gfsptech',1);
+	(DEFAULT,'SPTech School','Educare Tecnologia da Informacao S.a','11900001111','educare.tecnologia@company.com','07165496000100',1);
     
 -- endereço da empresa
 INSERT INTO enderecoEmpresa VALUE
@@ -15,3 +15,7 @@ INSERT INTO enderecoEmpresa VALUE
 -- fazenda que pertence a essa empresa
 INSERT INTO fazenda VALUE 
 	(DEFAULT, 500, 500, 1);
+
+INSERT INTO sensor VALUE
+	(DEFAULT, 'dht11', 1, 1, 12, 15, 1),
+    (DEFAULT, 'lm35', 1, 1, 20, 30, 1);
