@@ -20,7 +20,6 @@ CREATE TABLE empresa(
     telCorp VARCHAR(13),
     email VARCHAR(100),
     cnpj CHAR(14),
-    senha VARCHAR(255),
     fkProspect INT,
 		CONSTRAINT fkEmpresaHasProspect FOREIGN KEY (fkProspect) REFERENCES prospect(idProspect)
 );
@@ -54,10 +53,11 @@ CREATE TABLE funcionario(
     nome VARCHAR(45),
     email VARCHAR(100),
     senha VARCHAR(255),
-    cargo VARCHAR(45) DEFAULT 'Estagiário',
 	fkEmpresa INT,
 		CONSTRAINT pkEmpresaHasFuncionario PRIMARY KEY (idFuncionario, fkEmpresa),
-		CONSTRAINT fkEmpresaHasFuncionario FOREIGN KEY (fkEmpresa) REFERENCES empresa(idEmpresa)
+		CONSTRAINT fkEmpresaHasFuncionario FOREIGN KEY (fkEmpresa) REFERENCES empresa(idEmpresa),
+	fkRepresentante INT,
+    CONSTRAINT fkfuncionario FOREIGN KEY (fkRepresentante) REFERENCES funcionario(idFuncionario)
 );
 
 -- sensor cadastrado onde pertence a uma fazenda
