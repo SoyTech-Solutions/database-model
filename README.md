@@ -6,5 +6,5 @@ Repository dedicated to database scripts, containing definitive and test scripts
 
 ### Relational Entity Diagram
 <div align="center">
-  <img src="diagram/red-model.png"/>
+  <img src="diagrams/red-model.png"/>
 </div>
