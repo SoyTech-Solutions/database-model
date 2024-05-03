@@ -6,7 +6,7 @@ CREATE TABLE prospect(
 	idProspect INT PRIMARY KEY AUTO_INCREMENT,
     nome VARCHAR(45) NOT NULL,
     razaoSocial VARCHAR(100) NOT NULL,
-    email VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
     telefone VARCHAR(13) NOT NULL,
     descricao VARCHAR(500) NOT NULL
 );
@@ -18,10 +18,11 @@ CREATE TABLE empresa(
     nome VARCHAR(45) NOT NULL,
     razaoSocial VARCHAR(100) NOT NULL,
     telCorp VARCHAR(13) NOT NULL,
-    email VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
     cnpj CHAR(14) NOT NULL,
+    nomeUsuario VARCHAR(20) NOT NULL,
+    senha VARCHAR(255) NOT NULL,
     fkProspect INT,
-    
 		CONSTRAINT fkEmpresaHasProspect FOREIGN KEY (fkProspect) REFERENCES prospect(idProspect)
 );
 
@@ -40,25 +41,46 @@ CREATE TABLE enderecoEmpresa(
 -- apenas o acesso "master" pode cadastrar a fazenda ou fazendas
 CREATE TABLE fazenda(
 	idFazenda INT PRIMARY KEY AUTO_INCREMENT,
-	larguraHec INT,
-    alturaHec INT,
-	fkEmpresa INT,
+    fkEmpresa INT,
+    qtdHec INT NOT NULL,
+	cepRural CHAR(8),
         CONSTRAINT fkEmpresaHasFazenda FOREIGN KEY (fkEmpresa) REFERENCES empresa(idEmpresa)
 );	
 
 -- funcionarios que pertence a essa empresa
 -- cadastrado pelo cliente, usuário "master", autonomia de multiusuários
-CREATE TABLE funcionario(
-	idFuncionario INT AUTO_INCREMENT,
+CREATE TABLE usuario(
+	idUsuario INT AUTO_INCREMENT,
     nome VARCHAR(45) NOT NULL,
     email VARCHAR(100) NOT NULL,
     senha VARCHAR(255) NOT NULL,
-    cargo VARCHAR(45),
+    cargo VARCHAR(45) DEFAULT 'Estagiário',
 	fkEmpresa INT,
-		CONSTRAINT pkEmpresaHasFuncionario PRIMARY KEY (idFuncionario, fkEmpresa),
-		CONSTRAINT fkEmpresaHasFuncionario FOREIGN KEY (fkEmpresa) REFERENCES empresa(idEmpresa),
+		CONSTRAINT pkEmpresaHasUsuario PRIMARY KEY (idUsuario, fkEmpresa),
+		CONSTRAINT fkEmpresaHasUsuario FOREIGN KEY (fkEmpresa) REFERENCES empresa(idEmpresa),
 	fkMaster INT,
-    CONSTRAINT fkfuncionario FOREIGN KEY (fkMaster) REFERENCES funcionario(idFuncionario)
+    CONSTRAINT fkUsuario FOREIGN KEY (fkMaster) REFERENCES usuario(idUsuario)
+);
+
+
+-- parametros dos sensores em cada fazenda
+CREATE TABLE parametro(
+idParametro INT PRIMARY KEY AUTO_INCREMENT,
+umidMin INT,
+umidMax INT,
+tempMin DECIMAL(5,2),
+tempMax DECIMAL(5,2),
+fkFazenda INT,
+	CONSTRAINT fkParametroFazenda FOREIGN KEY (fkFazenda) REFERENCES fazenda(idFazenda)
+);
+
+CREATE TABLE lote(
+idLote INT AUTO_INCREMENT,
+fkFazenda INT,
+CONSTRAINT pkLoteFazenda PRIMARY KEY (idLote, fkFazenda),
+CONSTRAINT fkLoteFazenda FOREIGN KEY (fkFazenda) REFERENCES fazenda(idFazenda),
+qtdHec INT NOT NULL,
+apelido VARCHAR(45) NOT NULL
 );
 
 -- sensor cadastrado onde pertence a uma fazenda
@@ -67,13 +89,10 @@ CREATE TABLE sensor(
 	idSensor INT PRIMARY KEY AUTO_INCREMENT,
     tipo VARCHAR(5) NOT NULL,
 		CONSTRAINT chkTipo CHECK (tipo in('dht11','lm35')),
-	eixoX INT,
-    eixoY INT,
-    minIdeal DECIMAL(5,2) NOT NULL,
-    maxIdeal DECIMAL(5,2) NOT NULL,
 	fkFazenda INT,
 		CONSTRAINT fkFazendaHasSensor FOREIGN KEY (fkFazenda) REFERENCES fazenda(idFazenda)
 );
+
 
 -- dados capturados 
 -- que pertence a algum sensor
