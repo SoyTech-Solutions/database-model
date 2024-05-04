@@ -1,8 +1,6 @@
 CREATE DATABASE soytech; -- criando a base de dados
 USE soytech; 
 
-
-
 -- dados do lead capturado pelos meios de contato
 CREATE TABLE prospect(
 	idProspect INT PRIMARY KEY AUTO_INCREMENT,
@@ -43,7 +41,7 @@ CREATE TABLE enderecoEmpresa(
 -- cadastrado pelo cliente, usuário "master", autonomia de multiusuários
 CREATE TABLE usuario(
 	idUsuario INT AUTO_INCREMENT,
-    nome VARCHAR(45) NOT NULL,
+    usuario VARCHAR(25) NOT NULL,
     email VARCHAR(100) NOT NULL,
     senha VARCHAR(255) NOT NULL,
 	fkEmpresa INT,
