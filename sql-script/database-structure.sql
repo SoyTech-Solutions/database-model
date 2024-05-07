@@ -104,6 +104,7 @@ CREATE TABLE sensorLog(
 	idSensorLog INT AUTO_INCREMENT,
     dadoCapturado DECIMAL(5,2) NOT NULL,
     dataHora DATETIME NOT NULL,
+    critico BOOL,
 	fkSensor INT,
 		CONSTRAINT pkSensorHasSensorLog PRIMARY KEY (idSensorLog,fkSensor),
         CONSTRAINT fkSensorHasSensorLog FOREIGN KEY (fkSensor) REFERENCES sensor(idSensor)
