@@ -12,23 +12,31 @@ INSERT INTO empresa VALUE
 INSERT INTO enderecoEmpresa VALUE
 	(DEFAULT,'1414905','595','Em frente à Starbucks', 1);
     
--- usuario MASTER da empresa
-INSERT INTO usuario VALUE 
-	(DEFAULT, 'fernanda', 'fernanda.caramico@sptech.school', 'fe123', 1, null);
-    
 -- fazenda que pertence á este usuario master, representante
 INSERT INTO fazenda VALUE 
-	(DEFAULT, 'Boituva',25,'18559899', 1);
+	(DEFAULT, 'Boituva',25,'18559899', 1),
+    (DEFAULT, 'Tatuí',30,'18282899', 1),
+    (DEFAULT, 'Jales',40,'15709899', 1);    
 
+-- usuario MASTER da empresa
+INSERT INTO usuario VALUE 
+	(DEFAULT, 'Fernanda', 'fernanda.caramico@sptech.school', 'fe123', 1, null),
+    (DEFAULT, 'Rafael', 'rafael.brandao@sptech.school', 'rafa123', 1, 1);
+    
 -- parametros da fazenda 
 INSERT INTO parametroFazenda VALUE 
 	(DEFAULT, 12, 14.5, 20.00, 30.00, 1);
     
 -- Parte da fazenda, fragmento em lotes
 INSERT INTO lote VALUE 
-	(DEFAULT, 10, 'lote x', 1),
-    (DEFAULT, 10, 'lote y', 1),
-    (DEFAULT, 5, 'lote z', 1);
+	(DEFAULT, 10, 'lote 1x', 1),
+    (DEFAULT, 10, 'lote 1y', 1),
+    (DEFAULT, 5, 'lote 1z', 1),
+    (DEFAULT, 10, 'lote 2x', 2),
+    (DEFAULT, 10, 'lote 2y', 2),
+    (DEFAULT, 10, 'lote 2z', 2),
+    (DEFAULT, 20, 'lote 3x', 3),
+    (DEFAULT, 20, 'lote 3y', 3);
     
 -- sensor que esta alocado dentro dos lotes
 INSERT INTO sensor VALUE

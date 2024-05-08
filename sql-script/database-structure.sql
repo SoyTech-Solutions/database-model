@@ -5,22 +5,19 @@ USE soytech;
 CREATE TABLE prospect(
 	idProspect INT PRIMARY KEY AUTO_INCREMENT,
     representante VARCHAR(45) NOT NULL,
-    razaoSocial VARCHAR(100) NOT NULL,
+    nomeEmpresa VARCHAR(100) NOT NULL,
     email VARCHAR(100) NOT NULL UNIQUE,
     telefone VARCHAR(13) NOT NULL,
     descricao VARCHAR(500) NOT NULL
 );
 
--- após o prospect, ele se torna nosso cliente, a empresa que representa o comprador da solução
--- como representa o "cliente", "ele" possui o acesso principal, o primeiro acesso verificado para a plataforma
+-- após o prospect, caso seja aprovado por nós, ele se torna nosso cliente, a empresa que representa o comprador da solução
 CREATE TABLE empresa(
 	idEmpresa INT PRIMARY KEY AUTO_INCREMENT,
-    nome VARCHAR(45) NOT NULL,
+    nomeEmpresa VARCHAR(45) NOT NULL,
     razaoSocial VARCHAR(100) NOT NULL,
     telCorp VARCHAR(13) NOT NULL,
-	usuario VARCHAR(25) NOT NULL,
-    email VARCHAR(100) NOT NULL UNIQUE,
-	senha VARCHAR(255) NOT NULL,
+    emailCorp VARCHAR(100) NOT NULL UNIQUE,
     cnpj CHAR(14) NOT NULL,
     fkProspect INT,
 		CONSTRAINT fkEmpresaHasProspect FOREIGN KEY (fkProspect) REFERENCES prospect(idProspect)
@@ -37,38 +34,39 @@ CREATE TABLE enderecoEmpresa(
         CONSTRAINT fkEmpresaHasEndereco FOREIGN KEY (fkEmpresa) REFERENCES empresa(idEmpresa)
 );
 
+
+-- a fazenda que pertence á essa empresa de produção de soja
+CREATE TABLE fazenda(
+	idFazenda INT AUTO_INCREMENT,
+    localidade VARCHAR(25) NOT NULL,
+    qtdHec INT NOT NULL,
+	cepRural CHAR(8)
+);	
+
+
 -- funcionarios que pertence a essa empresa
--- cadastrado pelo cliente, usuário "master", autonomia de multiusuários
 CREATE TABLE usuario(
 	idUsuario INT AUTO_INCREMENT,
     usuario VARCHAR(25) NOT NULL,
     email VARCHAR(100) NOT NULL,
     senha VARCHAR(255) NOT NULL,
 	fkEmpresa INT,
-		CONSTRAINT pkEmpresaHasUsuario PRIMARY KEY (idUsuario, fkEmpresa),
+    fkFazenda INT,
+		CONSTRAINT pkEmpresaHasUsuario PRIMARY KEY (idUsuario, fkEmpresa, fkFazenda),
 		CONSTRAINT fkEmpresaHasUsuario FOREIGN KEY (fkEmpresa) REFERENCES empresa(idEmpresa),
-	fkMaster INT,
-		CONSTRAINT fkUsuario FOREIGN KEY (fkMaster) REFERENCES usuario(idUsuario)
+		CONSTRAINT fkUsuarioHasFazenda FOREIGN KEY (fkFazenda) REFERENCES fazenda(idFazenda),
+	fkAdmin INT,
+    fkRoot INT,
+		CONSTRAINT fkAdmin FOREIGN KEY (fkAdmin) REFERENCES usuario(idUsuario),
+        CONSTRAINT fkRoot FOREIGN KEY (fkRoot) REFERENCES usuario(idUsuario)
 );
 
-
-
--- a fazenda que pertence á essa empresa de produção de soja
--- apenas o acesso "master" pode cadastrar a fazenda ou fazendas
-CREATE TABLE fazenda(
-	idFazenda INT AUTO_INCREMENT,
-    localidade VARCHAR(25) NOT NULL,
-    qtdHec INT NOT NULL,
-	cepRural CHAR(8),
-	fkMaster INT,
-		CONSTRAINT pkFazenda PRIMARY KEY (idFazenda, fkMaster)
-);	
 
 -- parametros dos sensores em cada fazenda
 CREATE TABLE parametroFazenda(
 	idParametroFazenda INT AUTO_INCREMENT,
-	umidMin INT,
-	umidMax INT,
+	umidMin DECIMAL(5,2),
+	umidMax DECIMAL(5,2),
 	tempMin DECIMAL(5,2),
 	tempMax DECIMAL(5,2),
 	fkFazenda INT,
@@ -76,6 +74,7 @@ CREATE TABLE parametroFazenda(
         CONSTRAINT pkParametroFazenda PRIMARY KEY (idParametroFazenda,fkFazenda)
 );
 
+-- uma fazenda pode ter vários lotes, separando a fazenda
 CREATE TABLE lote(
 	idLote INT AUTO_INCREMENT,
 	qtdHec INT NOT NULL,
@@ -86,7 +85,7 @@ CREATE TABLE lote(
 );
 
 -- sensor cadastrado onde pertence a uma fazenda
--- simulando sua localização apenas por meio de eixo x e y
+-- simulando sua localização apenas por meio de eixo x e y (caso informado)
 CREATE TABLE sensor(
 	idSensor INT PRIMARY KEY AUTO_INCREMENT,
     tipo VARCHAR(5) NOT NULL,
@@ -104,8 +103,9 @@ CREATE TABLE sensorLog(
 	idSensorLog INT AUTO_INCREMENT,
     dadoCapturado DECIMAL(5,2) NOT NULL,
     dataHora DATETIME NOT NULL,
-    critico BOOL,
+    critico TINYINT,
 	fkSensor INT,
 		CONSTRAINT pkSensorHasSensorLog PRIMARY KEY (idSensorLog,fkSensor),
         CONSTRAINT fkSensorHasSensorLog FOREIGN KEY (fkSensor) REFERENCES sensor(idSensor)
 );
+select*from sensorLog
