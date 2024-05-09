@@ -60,3 +60,28 @@ parametroFazenda.tempMax, '°C',
 ' com sucesso!'
 ) AS 'Atualização de parâmetro' FROM fazenda
 JOIN parametroFazenda ON parametroFazenda.fkFazenda = fazenda.idFazenda WHERE fazenda.localidade = 'Tatuí';
+
+
+-- Simulando um login
+SELECT usuario.idUsuario FROM usuario WHERE usuario.usuario = 'Fernanda' AND usuario.senha = 'fe123';
+
+SELECT fazenda.localidade
+FROM usuario
+JOIN fazenda ON fazenda.fkEmpresa = usuario.idUsuario
+WHERE idUsuario = 1;
+
+
+-- Histórico de dados
+SELECT fazenda.localidade AS 'Fazenda',
+lote.apelido AS 'Lote',
+sensorLog.dataHora as 'Momento',
+sensor.tipo AS 'Sensor',
+sensorLog.dadoCapturado AS 'Valor capturado',
+sensorLog.critico AS 'Crítico'
+FROM fazenda
+JOIN lote ON lote.fkFazenda = fazenda.idFazenda
+JOIN sensor ON sensor.fkLote = lote.idLote
+JOIN sensorLog ON sensorLog.fkSensor = sensor.idSensor 
+JOIN usuario ON usuario.fkFazenda = fazenda.idFazenda
+WHERE idUsuario = 1
+ORDER BY fazenda, lote, momento;
