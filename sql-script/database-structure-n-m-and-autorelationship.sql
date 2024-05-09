@@ -40,9 +40,7 @@ CREATE TABLE fazenda(
 	idFazenda INT PRIMARY KEY AUTO_INCREMENT,
     localidade VARCHAR(25) NOT NULL,
     qtdHec INT NOT NULL,
-	cepRural CHAR(8),
-    fkEmpresa INT,
-		CONSTRAINT fkEmpresa FOREIGN KEY (fkEmpresa) REFERENCES empresa(idEmpresa)
+	cepRural CHAR(8)
 );	
 
 
@@ -59,17 +57,21 @@ CREATE TABLE usuario(
 		CONSTRAINT pkEmpresaHasUsuario PRIMARY KEY (idUsuario, fkEmpresa, fkFazenda),
 		CONSTRAINT fkEmpresaHasUsuario FOREIGN KEY (fkEmpresa) REFERENCES empresa(idEmpresa),
 		CONSTRAINT fkUsuarioHasFazenda FOREIGN KEY (fkFazenda) REFERENCES fazenda(idFazenda)
+	
 );
 
 
-CREATE TABLE rootHasFazenda (
-	idRootHasFazenda INT,
-    fkRoot INT,
+-- relação N:M entre Representantes de Empresa e Fazendas;
+CREATE TABLE RepresentanteHasFazenda(
+	idRepresentanteHasFazenda INT,
+    fkUsuario INT,
     fkFazenda INT,
-		CONSTRAINT pkRootFazenda PRIMARY KEY (idRootHasFazenda, fkRoot, fkFazenda),
-        CONSTRAINT fkRoot FOREIGN KEY (fkRoot) REFERENCES usuario(idUsuario),
-        CONSTRAINT fkFazenda FOREIGN KEY (fkFazenda) REFERENCES fazenda(idFazenda)
+		CONSTRAINT pkRepresentante PRIMARY KEY (idRepresentanteHasFazenda, fkUsuario, fkFazenda),
+        CONSTRAINT fkFazenda FOREIGN KEY (fkFazenda) references fazenda(idFazenda),
+        CONSTRAINT fkUsuario FOREIGN KEY (fkUsuario) references usuario(idUsuario),
+	qtdFazenda INT NOT NULL
 );
+
 
 
 -- parametros dos sensores em cada fazenda
@@ -120,4 +122,3 @@ CREATE TABLE sensorLog(
 );
 
 SELECT * FROM sensorLog;
--- drop database soytech;
