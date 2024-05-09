@@ -35,4 +35,28 @@ JOIN parametroFazenda ON parametroFazenda.fkFazenda = fazenda.idFazenda
 JOIN lote ON lote.fkFazenda = fazenda.idFazenda;
 
 
+-- simulando um cadastro de usuário
+SELECT CONCAT('O(A) usuário ',
+usuario.usuario,
+' email: ',
+usuario.email,
+' foi cadastrado com sucesso para gerenciar a fazenda ',
+fazenda.localidade,
+' ☺'
+) AS 'Cadastrando usuário' FROM usuario
+JOIN fazenda ON fazenda.idFazenda = usuario.fkFazenda WHERE usuario.usuario = 'Pedro';
 
+-- simulando uma alteração dos parâmetros de uma fazenda
+SELECT CONCAT('Os parâmetros da fazenda ',
+fazenda.localidade,
+' foram atualizados para: umidade mín: ',
+parametroFazenda.umidMin,'%',
+' máx: ',
+parametroFazenda.umidMax, '%',
+' temperatura mín: ',
+parametroFazenda.tempMin, '°C',
+' máx: ',
+parametroFazenda.tempMax, '°C',
+' com sucesso!'
+) AS 'Atualização de parâmetro' FROM fazenda
+JOIN parametroFazenda ON parametroFazenda.fkFazenda = fazenda.idFazenda WHERE fazenda.localidade = 'Tatuí';
