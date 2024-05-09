@@ -6,7 +6,7 @@ INSERT INTO prospect VALUE
 
 -- lead capturado convertido -> cliente = empresa
 INSERT INTO empresa VALUE
-	(DEFAULT,'SPTech School','Educare Tecnologia da Informacao S.a','551135894043','sptech#20241','educare.tecnologia@company.com','#GfSptech','07165496000100', 1);
+	(DEFAULT,'SPTech School','Educare Tecnologia da Informacao S.a','551135894043','educare.tecnologia@company.com','07165496000100', 1);
 
 -- endereço da empresa
 INSERT INTO enderecoEmpresa VALUE
@@ -20,8 +20,15 @@ INSERT INTO fazenda VALUE
 
 -- usuario MASTER da empresa
 INSERT INTO usuario VALUE 
-	(DEFAULT, 'Fernanda', 'fernanda.caramico@sptech.school', 'fe123', 1, null),
-    (DEFAULT, 'Rafael', 'rafael.brandao@sptech.school', 'rafa123', 1, 1);
+	(DEFAULT, 'Fernanda', 'fernanda.caramico@sptech.school', 'fe123', 1, 1, null, null),
+    (DEFAULT, 'Rafael', 'rafael.brandao@sptech.school', 'rafa123', 1, 1, null, 1),
+	(DEFAULT, 'Fernando', 'fernando.souza@sptech.school', 'nando123', 1, 2, null, 1),
+    (DEFAULT, 'Julia', 'rafael.brandao@sptech.school', 'rafa123', 1, 1, 2, 1 -- Alterar 
+	(DEFAULT, 'Fernanda', 'fernanda.caramico@sptech.school', 'fe123', 1, 1, 2, 1), -- Alterar
+    (DEFAULT, 'Rafael', 'rafael.brandao@sptech.school', 'rafa123', 1, 2, 3, 1); -- Alterar
+    -- Ordem das fk's: fkEmpresa em que trabalha, fkFazenda em que está gerenciando, fkGestor (seu gestor ou null, se for um)
+    -- fkRepresentanteEmpresa (seu representante supremo, o próprio da empresa ou null se for o representante)
+    -- Lembrando que fkGestor e fkRepresentanteEmpresa ambos se referem ao idUsuario, então tomar muito cuidado na hora de preencher.
     
 -- parametros da fazenda 
 INSERT INTO parametroFazenda VALUE 

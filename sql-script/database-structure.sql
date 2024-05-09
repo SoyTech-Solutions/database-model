@@ -55,11 +55,24 @@ CREATE TABLE usuario(
 		CONSTRAINT pkEmpresaHasUsuario PRIMARY KEY (idUsuario, fkEmpresa, fkFazenda),
 		CONSTRAINT fkEmpresaHasUsuario FOREIGN KEY (fkEmpresa) REFERENCES empresa(idEmpresa),
 		CONSTRAINT fkUsuarioHasFazenda FOREIGN KEY (fkFazenda) REFERENCES fazenda(idFazenda),
-	fkAdmin INT,
-    fkRoot INT,
-		CONSTRAINT fkAdmin FOREIGN KEY (fkAdmin) REFERENCES usuario(idUsuario),
-        CONSTRAINT fkRoot FOREIGN KEY (fkRoot) REFERENCES usuario(idUsuario)
+	fkGestor INT,
+    fkRepresentanteEmpresa INT,
+		CONSTRAINT fkGestor FOREIGN KEY (fkGestor) REFERENCES usuario(idUsuario),
+        CONSTRAINT fkRepresentanteEmpresa FOREIGN KEY (fkRepresentanteEmpresa) REFERENCES usuario(idUsuario)
 );
+
+
+-- relação N:M entre Representantes de Empresa e Fazendas;
+create table RepresentanteHasFazenda(
+	idRepresentanteHasFazenda INT,
+    fkUsuario INT,
+    fkFazenda INT,
+		CONSTRAINT pkRepresentante PRIMARY KEY (idRepresentanteHasFazenda, fkUsuario, fkFazenda),
+        CONSTRAINT fkFazenda FOREIGN KEY (fkFazenda) references fazenda(idFazenda),
+        CONSTRAINT fkUsuario FOREIGN KEY (fkUsuario) references usuario(idUsuario),
+	qtdFazenda INT NOT NULL,
+);
+
 
 
 -- parametros dos sensores em cada fazenda
