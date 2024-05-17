@@ -30,7 +30,7 @@ JOIN empresa ON empresa.fkProspect = prospect.idProspect
 JOIN enderecoEmpresa ON enderecoEmpresa.fkEmpresa = empresa.idEmpresa
 JOIN fazenda ON fazenda.fkEmpresa = empresa.IdEmpresa
 JOIN usuario ON usuario.fkEmpresa = empresa.idEmpresa
-JOIN rootHasFazenda ON rootHasFazenda.fkRoot = usuario.idUsuario AND rootHasFazenda.fkFazenda = fazenda.idFazenda
+JOIN usuarioHasFazenda ON usuarioHasFazenda.fkUsuario = usuario.idUsuario AND usuarioHasFazenda.fkFazenda = fazenda.idFazenda
 JOIN parametroFazenda ON parametroFazenda.fkFazenda = fazenda.idFazenda
 JOIN lote ON lote.fkFazenda = fazenda.idFazenda;
 

@@ -52,8 +52,6 @@ CREATE TABLE usuario(
     usuario VARCHAR(25) NOT NULL,
     email VARCHAR(100) NOT NULL,
     senha VARCHAR(255) NOT NULL,
-	cargo VARCHAR(5) NOT NULL DEFAULT 'User',
-		CONSTRAINT chkCargo CHECK (cargo IN('User','Admin','Root')),
     fkEmpresa INT,
     fkFazenda INT,
 		CONSTRAINT pkEmpresaHasUsuario PRIMARY KEY (idUsuario, fkEmpresa, fkFazenda),
@@ -62,12 +60,12 @@ CREATE TABLE usuario(
 );
 
 
-CREATE TABLE rootHasFazenda (
-	idRootHasFazenda INT,
-    fkRoot INT,
+CREATE TABLE usuarioHasFazenda (
+	idUsuarioHasFazenda INT,
+    fkUsuario INT,
     fkFazenda INT,
-		CONSTRAINT pkRootFazenda PRIMARY KEY (idRootHasFazenda, fkRoot, fkFazenda),
-        CONSTRAINT fkRoot FOREIGN KEY (fkRoot) REFERENCES usuario(idUsuario),
+		CONSTRAINT pkUsuarioFazenda PRIMARY KEY (idUsuarioHasFazenda, fkUsuario, fkFazenda),
+        CONSTRAINT fkRoot FOREIGN KEY (fkUsuario) REFERENCES usuario(idUsuario),
         CONSTRAINT fkFazenda FOREIGN KEY (fkFazenda) REFERENCES fazenda(idFazenda)
 );
 
