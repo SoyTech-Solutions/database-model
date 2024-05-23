@@ -85,3 +85,17 @@ JOIN sensorLog ON sensorLog.fkSensor = sensor.idSensor
 JOIN usuario ON usuario.fkFazenda = fazenda.idFazenda
 WHERE idUsuario = 1
 ORDER BY fazenda, lote, momento;
+
+
+
+/*
+Selects para a API
+*/
+use soytech;
+
+    select usuario, count(distinct localidade) as qtdFazendas, count(lote.fkFazenda) as qtdTotalLotes from usuario
+join usuarioHasFazenda on fkUsuario = idUsuario
+join fazenda on idFazenda = usuarioHasFazenda.fkFazenda
+join lote on idFazenda = lote.fkFazenda
+where idUsuario = '1'
+group by usuario;

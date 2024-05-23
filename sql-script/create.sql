@@ -58,8 +58,8 @@ INSERT INTO lote VALUE
     (DEFAULT, 10, 'lote 2x', 2), -- Sem sensor
     (DEFAULT, 10, 'lote 2y', 2), -- Sem sensor
     (DEFAULT, 10, 'lote 2z', 2), -- Sem sensor
-    (DEFAULT, 20, 'lote 3x', 3), -- Sem sensor, ainda não está sendo monitorada
-    (DEFAULT, 20, 'lote 3y', 3); -- Sem sensor, ainda não está sendo monitorada
+    (DEFAULT, 20, 'lote 3x', 3), -- Sem sensor, ainda não está sendo monitorada (NÃO CADASTRADA)
+    (DEFAULT, 20, 'lote 3y', 3); -- Sem sensor, ainda não está sendo monitorada	(NÃO CADASTRADA)
     
     
 -- sensor que esta alocado dentro dos lotes
