@@ -91,7 +91,10 @@ ORDER BY fazenda, lote, momento;
 /*
 Selects para a API
 */
+
 use soytech;
+
+-- KPI fazendas e lotes
 
     select usuario, count(distinct localidade) as qtdFazendas, count(lote.fkFazenda) as qtdTotalLotes from usuario
 join usuarioHasFazenda on fkUsuario = idUsuario
@@ -99,3 +102,17 @@ join fazenda on idFazenda = usuarioHasFazenda.fkFazenda
 join lote on idFazenda = lote.fkFazenda
 where idUsuario = '1'
 group by usuario;
+
+-- KPI temperatura mais crítica
+
+select dadoCapturado,
+	case
+		when dadoCapturado < 20 then 20 - dadoCapturado
+		when dadoCapturado > 30 then dadoCapturado - 30
+        else least(dadoCapturado - 20, 30 - dadoCapturado)
+	end as margem
+from sensorLog
+join sensor on fkSensor = idSensor
+where tipo = 'lm35'
+order by margem asc
+limit 1;
