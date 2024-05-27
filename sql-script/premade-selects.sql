@@ -96,6 +96,10 @@ use soytech;
 
 -- KPI fazendas e lotes
 
+
+-- SEPARAR USUARIO E EMPRESA DO USUARIO DA QUANTIDADE DE FAZENDAS E LOTES (FAZER UM SELECT PARA CADA)
+
+
     select usuario, count(distinct localidade) as qtdFazendas, count(lote.fkFazenda) as qtdTotalLotes from usuario
 join usuarioHasFazenda on fkUsuario = idUsuario
 join fazenda on idFazenda = usuarioHasFazenda.fkFazenda
@@ -103,16 +107,105 @@ join lote on idFazenda = lote.fkFazenda
 where idUsuario = '1'
 group by usuario;
 
--- KPI temperatura mais crítica
 
-select dadoCapturado,
-	case
-		when dadoCapturado < 20 then 20 - dadoCapturado
-		when dadoCapturado > 30 then dadoCapturado - 30
-        else least(dadoCapturado - 20, 30 - dadoCapturado)
-	end as margem
-from sensorLog
-join sensor on fkSensor = idSensor
+-- KPI temperatura e umidade mais crítica
+
+
+-- SELECIONAR APENAS OS DADOS CRÍTICOS DOS SENSORES DOS LOTES DAS FAZENDAS DAQUELE USUARIO (LM35 < 20 E > 30, DHT11 < 12 E > 14.5
+
+SELECT dadoCapturado, margem
+FROM (
+    SELECT dadoCapturado,
+        CASE
+            WHEN dadoCapturado < 20 THEN 20 - dadoCapturado
+            WHEN dadoCapturado > 30 THEN dadoCapturado - 30
+            ELSE LEAST(dadoCapturado - 20, 30 - dadoCapturado)
+        END AS margem
+    FROM sensorLog
+    JOIN sensor ON sensorLog.fkSensor = sensor.idSensor
+    JOIN lote ON sensor.fkLote = lote.idLote
+    JOIN fazenda ON lote.fkFazenda = fazenda.idFazenda
+    JOIN usuarioHasFazenda ON fazenda.idFazenda = usuarioHasFazenda.fkFazenda
+    JOIN usuario ON usuarioHasFazenda.fkUsuario = usuario.idUsuario
+    WHERE sensor.tipo = 'lm35' AND usuario.idUsuario = 1
+) AS subquery
+ORDER BY
+    (SELECT COUNT(*) 
+     FROM sensorLog 
+     JOIN sensor ON sensorLog.fkSensor = sensor.idSensor
+     JOIN lote ON sensor.fkLote = lote.idLote
+     JOIN fazenda ON lote.fkFazenda = fazenda.idFazenda
+     JOIN usuarioHasFazenda ON fazenda.idFazenda = usuarioHasFazenda.fkFazenda
+     JOIN usuario ON usuarioHasFazenda.fkUsuario = usuario.idUsuario
+     WHERE sensor.tipo = 'lm35' AND usuario.idUsuario = 1 AND (sensorLog.dadoCapturado < 20 OR sensorLog.dadoCapturado > 30)) DESC,
+    margem ASC
+LIMIT 1;
+
+
+SELECT dadoCapturado, margem
+FROM (
+    SELECT dadoCapturado,
+        CASE
+            WHEN dadoCapturado < 12 THEN 12 - dadoCapturado
+            WHEN dadoCapturado > 14.5 THEN dadoCapturado - 14.5
+        END AS margem,
+        CASE
+            WHEN dadoCapturado < 12 OR dadoCapturado > 14.5 THEN 1
+            ELSE 0
+        END AS fora_intervalo
+    FROM sensorLog
+    JOIN sensor ON sensorLog.fkSensor = sensor.idSensor
+    JOIN lote ON sensor.fkLote = lote.idLote
+    JOIN fazenda ON lote.fkFazenda = fazenda.idFazenda
+    JOIN usuarioHasFazenda ON fazenda.idFazenda = usuarioHasFazenda.fkFazenda
+    JOIN usuario ON usuarioHasFazenda.fkUsuario = usuario.idUsuario
+    WHERE sensor.tipo = 'dht11' AND usuario.idUsuario = 1
+) AS subquery
+ORDER BY
+    fora_intervalo DESC,
+    margem * (1 - 2 * fora_intervalo) ASC
+LIMIT 1;
+
+SELECT dadoCapturado, margem
+FROM (
+    SELECT dadoCapturado,
+        CASE
+            WHEN dadoCapturado < 20 THEN 20 - dadoCapturado
+            WHEN dadoCapturado > 30 THEN dadoCapturado - 30
+            ELSE LEAST(dadoCapturado - 20, 30 - dadoCapturado)
+        END AS margem,
+        CASE
+            WHEN dadoCapturado < 20 OR dadoCapturado > 30 THEN 1
+            ELSE 0
+        END AS fora_intervalo
+    FROM sensorLog
+    JOIN sensor ON sensorLog.fkSensor = sensor.idSensor
+    JOIN lote ON sensor.fkLote = lote.idLote
+    JOIN fazenda ON lote.fkFazenda = fazenda.idFazenda
+    JOIN usuarioHasFazenda ON fazenda.idFazenda = usuarioHasFazenda.fkFazenda
+    JOIN usuario ON usuarioHasFazenda.fkUsuario = usuario.idUsuario
+    WHERE sensor.tipo = 'lm35' AND usuario.idUsuario = 1
+) AS subquery
+ORDER BY
+    fora_intervalo DESC,
+    margem * (1 - 2 * fora_intervalo) ASC
+LIMIT 1;
+
+
+-- KPI número de sensores operando
+
+SELECT COUNT(idSensor) as 'Sensores lm35' from sensor 
+join lote on fkLote = idLote
+join fazenda on lote.fkFazenda = idFazenda
+join usuarioHasFazenda on usuarioHasFazenda.fkFazenda = idFazenda
+join usuario on fkUsuario = idUsuario
 where tipo = 'lm35'
-order by margem asc
-limit 1;
+and idUsuario = 1;
+
+SELECT COUNT(idSensor) as 'Sensores dht11' from sensor 
+join lote on fkLote = idLote
+join fazenda on lote.fkFazenda = idFazenda
+join usuarioHasFazenda on usuarioHasFazenda.fkFazenda = idFazenda
+join usuario on fkUsuario = idUsuario
+where tipo = 'dht11'
+and idUsuario = 1;
