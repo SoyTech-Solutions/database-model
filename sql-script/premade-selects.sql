@@ -96,11 +96,14 @@ use soytech;
 
 -- KPI fazendas e lotes
 
-
--- SEPARAR USUARIO E EMPRESA DO USUARIO DA QUANTIDADE DE FAZENDAS E LOTES (FAZER UM SELECT PARA CADA)
-
-
-    select usuario, count(distinct localidade) as qtdFazendas, count(lote.fkFazenda) as qtdTotalLotes from usuario
+ -- Usuário logado no momento
+    select usuario, nomeEmpresa from usuario
+    join Empresa on fkEmpresa = idEmpresa
+    where idUsuario = 1;
+    
+    
+ -- Quantidade de fazenda e lotes desse usuário
+	select count(distinct localidade) as qtdFazendas, count(lote.fkFazenda) as qtdTotalLotes from usuario
 join usuarioHasFazenda on fkUsuario = idUsuario
 join fazenda on idFazenda = usuarioHasFazenda.fkFazenda
 join lote on idFazenda = lote.fkFazenda
@@ -110,9 +113,27 @@ group by usuario;
 
 -- KPI temperatura e umidade mais crítica
 
+select dadoCapturado from sensorLog
+join sensor on fkSensor = idSensor
+join lote on fkLote = idLote
+join fazenda on lote.fkFazenda = idFazenda
+join usuarioHasFazenda on usuarioHasFazenda.fkFazenda = idFazenda
+join usuario on fkUsuario = idUsuario
+where idUsuario = 1 and (dadoCapturado > 30 or dadoCapturado < 20)
+and tipo = 'lm35';
 
--- SELECIONAR APENAS OS DADOS CRÍTICOS DOS SENSORES DOS LOTES DAS FAZENDAS DAQUELE USUARIO (LM35 < 20 E > 30, DHT11 < 12 E > 14.5
+select dadoCapturado from sensorLog
+join sensor on fkSensor = idSensor
+join lote on fkLote = idLote
+join fazenda on lote.fkFazenda = idFazenda
+join usuarioHasFazenda on usuarioHasFazenda.fkFazenda = idFazenda
+join usuario on fkUsuario = idUsuario
+where idUsuario = 1 and (dadoCapturado > 14.5 or dadoCapturado < 12)
+and tipo = 'dht11';
 
+
+-- NÃO SERÁ UTILIZADO
+/*
 SELECT dadoCapturado, margem
 FROM (
     SELECT dadoCapturado,
@@ -190,7 +211,7 @@ ORDER BY
     fora_intervalo DESC,
     margem * (1 - 2 * fora_intervalo) ASC
 LIMIT 1;
-
+*/
 
 -- KPI número de sensores operando
 
