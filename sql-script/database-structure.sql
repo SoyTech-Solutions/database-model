@@ -54,7 +54,7 @@ CREATE TABLE usuario(
     senha VARCHAR(255) NOT NULL,
     fkEmpresa INT,
     fkFazenda INT,
-		CONSTRAINT pkEmpresaHasUsuario PRIMARY KEY (idUsuario, fkEmpresa, fkFazenda),
+		CONSTRAINT pkEmpresaHasUsuario PRIMARY KEY (idUsuario, fkEmpresa),
 		CONSTRAINT fkEmpresaHasUsuario FOREIGN KEY (fkEmpresa) REFERENCES empresa(idEmpresa),
 		CONSTRAINT fkUsuarioHasFazenda FOREIGN KEY (fkFazenda) REFERENCES fazenda(idFazenda)
 );
