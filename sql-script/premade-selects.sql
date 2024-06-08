@@ -22,17 +22,14 @@ parametroFazenda.umidMax, '%',
 ' temperatura mín: ',
 parametroFazenda.tempMin, '°C',
 ' máx: ',
-parametroFazenda.tempMax, '°C',
-' e contém como parte dessa fazenda o lote apelidado de ',
-lote.apelido
+parametroFazenda.tempMax, '°C'
 ) AS Registro FROM prospect 
 JOIN empresa ON empresa.fkProspect = prospect.idProspect
 JOIN enderecoEmpresa ON enderecoEmpresa.fkEmpresa = empresa.idEmpresa
 JOIN fazenda ON fazenda.fkEmpresa = empresa.IdEmpresa
 JOIN usuario ON usuario.fkEmpresa = empresa.idEmpresa
 JOIN usuarioHasFazenda ON usuarioHasFazenda.fkUsuario = usuario.idUsuario AND usuarioHasFazenda.fkFazenda = fazenda.idFazenda
-JOIN parametroFazenda ON parametroFazenda.fkFazenda = fazenda.idFazenda
-JOIN lote ON lote.fkFazenda = fazenda.idFazenda;
+JOIN parametroFazenda ON parametroFazenda.fkFazenda = fazenda.idFazenda;
 
 
 -- simulando um cadastro de usuário
@@ -63,9 +60,9 @@ JOIN parametroFazenda ON parametroFazenda.fkFazenda = fazenda.idFazenda WHERE fa
 
 
 -- Simulando um login
-SELECT usuario.idUsuario FROM usuario WHERE usuario.usuario = 'Fernanda' AND usuario.senha = 'fe123';
+SELECT usuario.idUsuario as id FROM usuario WHERE usuario.usuario = 'Fernanda' AND usuario.senha = 'fe123';
 
-SELECT fazenda.localidade
+SELECT fazenda.localidade as fazendas
 FROM usuario
 JOIN fazenda ON fazenda.fkEmpresa = usuario.idUsuario
 WHERE idUsuario = 1;
@@ -73,18 +70,16 @@ WHERE idUsuario = 1;
 
 -- Histórico de dados
 SELECT fazenda.localidade AS 'Fazenda',
-lote.apelido AS 'Lote',
 sensorLog.dataHora as 'Momento',
 sensor.tipo AS 'Sensor',
 sensorLog.dadoCapturado AS 'Valor capturado',
 sensorLog.critico AS 'Crítico'
 FROM fazenda
-JOIN lote ON lote.fkFazenda = fazenda.idFazenda
-JOIN sensor ON sensor.fkLote = lote.idLote
+JOIN sensor ON sensor.fkFazenda = fazenda.idFazenda
 JOIN sensorLog ON sensorLog.fkSensor = sensor.idSensor 
 JOIN usuario ON usuario.fkFazenda = fazenda.idFazenda
 WHERE idUsuario = 1
-ORDER BY fazenda, lote, momento;
+ORDER BY fazenda, momento;
 
 
 
@@ -102,11 +97,10 @@ use soytech;
     where idUsuario = 1;
     
     
- -- Quantidade de fazenda e lotes desse usuário
-	select count(distinct localidade) as qtdFazendas, count(lote.fkFazenda) as qtdTotalLotes from usuario
+ -- Quantidade de fazendas desse usuário
+	select count(distinct localidade) as qtdFazendas from usuario
 join usuarioHasFazenda on fkUsuario = idUsuario
 join fazenda on idFazenda = usuarioHasFazenda.fkFazenda
-join lote on idFazenda = lote.fkFazenda
 where idUsuario = '1'
 group by usuario;
 
@@ -115,8 +109,7 @@ group by usuario;
 
 select dadoCapturado from sensorLog
 join sensor on fkSensor = idSensor
-join lote on fkLote = idLote
-join fazenda on lote.fkFazenda = idFazenda
+join fazenda on sensor.fkFazenda = idFazenda
 join usuarioHasFazenda on usuarioHasFazenda.fkFazenda = idFazenda
 join usuario on fkUsuario = idUsuario
 where idUsuario = 1 and (dadoCapturado > 30 or dadoCapturado < 20)
@@ -124,8 +117,7 @@ and tipo = 'lm35';
 
 select dadoCapturado from sensorLog
 join sensor on fkSensor = idSensor
-join lote on fkLote = idLote
-join fazenda on lote.fkFazenda = idFazenda
+join fazenda on sensor.fkFazenda = idFazenda
 join usuarioHasFazenda on usuarioHasFazenda.fkFazenda = idFazenda
 join usuario on fkUsuario = idUsuario
 where idUsuario = 1 and (dadoCapturado > 14.5 or dadoCapturado < 12)
@@ -216,16 +208,14 @@ LIMIT 1;
 -- KPI número de sensores operando
 
 SELECT COUNT(idSensor) as 'Sensores lm35' from sensor 
-join lote on fkLote = idLote
-join fazenda on lote.fkFazenda = idFazenda
+join fazenda on sensor.fkFazenda = idFazenda
 join usuarioHasFazenda on usuarioHasFazenda.fkFazenda = idFazenda
 join usuario on fkUsuario = idUsuario
 where tipo = 'lm35'
 and idUsuario = 1;
 
 SELECT COUNT(idSensor) as 'Sensores dht11' from sensor 
-join lote on fkLote = idLote
-join fazenda on lote.fkFazenda = idFazenda
+join fazenda on sensor.fkFazenda = idFazenda
 join usuarioHasFazenda on usuarioHasFazenda.fkFazenda = idFazenda
 join usuario on fkUsuario = idUsuario
 where tipo = 'dht11'

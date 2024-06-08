@@ -49,20 +49,7 @@ INSERT INTO parametroFazenda VALUE
 	(DEFAULT, 12, 14.5, 20.00, 30.00, 1),
     (DEFAULT, 13, 14, 23, 27, 2);
     
-    
--- Parte da fazenda, fragmento em lotes
-INSERT INTO lote VALUE 
-	(DEFAULT, 10, 'lote 1x', 1),
-    (DEFAULT, 10, 'lote 1y', 1),
-    (DEFAULT, 5, 'lote 1z', 1),
-    (DEFAULT, 10, 'lote 2x', 2), -- Sem sensor
-    (DEFAULT, 10, 'lote 2y', 2), -- Sem sensor
-    (DEFAULT, 10, 'lote 2z', 2), -- Sem sensor
-    (DEFAULT, 20, 'lote 3x', 3), -- Sem sensor, ainda não está sendo monitorada (NÃO CADASTRADA)
-    (DEFAULT, 20, 'lote 3y', 3); -- Sem sensor, ainda não está sendo monitorada	(NÃO CADASTRADA)
-    
-    
--- sensor que esta alocado dentro dos lotes
+-- sensor que esta alocado dentro das fazendas
 INSERT INTO sensor VALUE
 	(DEFAULT, 'dht11', 5,5, 1),
     (DEFAULT, 'lm35', 5,6, 1),

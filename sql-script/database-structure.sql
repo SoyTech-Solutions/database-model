@@ -82,16 +82,6 @@ CREATE TABLE parametroFazenda(
         CONSTRAINT pkParametroFazenda PRIMARY KEY (idParametroFazenda,fkFazenda)
 );
 
--- uma fazenda pode ter vários lotes, separando a fazenda
-CREATE TABLE lote(
-	idLote INT AUTO_INCREMENT,
-	qtdHec INT NOT NULL,
-	apelido VARCHAR(45) NOT NULL,
-	fkFazenda INT,
-		CONSTRAINT pkLoteFazenda PRIMARY KEY (idLote, fkFazenda),
-		CONSTRAINT fkLoteFazenda FOREIGN KEY (fkFazenda) REFERENCES fazenda(idFazenda)
-);
-
 -- sensor cadastrado onde pertence a uma fazenda
 -- simulando sua localização apenas por meio de eixo x e y (caso informado)
 CREATE TABLE sensor(
@@ -100,8 +90,8 @@ CREATE TABLE sensor(
 		CONSTRAINT chkTipo CHECK (tipo in('dht11','lm35')),
 	eixoX INT,
     eixoY INT,
-	fkLote INT,
-		CONSTRAINT sensorHasLote FOREIGN KEY (fkLote) REFERENCES lote(idLote)
+	fkFazenda INT,
+		CONSTRAINT sensorHasFazenda FOREIGN KEY (fkFazenda) REFERENCES fazenda(idFazenda)
 );
 
 
