@@ -61,7 +61,7 @@ CREATE TABLE usuario(
 
 
 CREATE TABLE usuarioHasFazenda (
-	idUsuarioHasFazenda INT,
+	idUsuarioHasFazenda INT AUTO_INCREMENT,
     fkUsuario INT,
     fkFazenda INT,
 		CONSTRAINT pkUsuarioFazenda PRIMARY KEY (idUsuarioHasFazenda, fkUsuario, fkFazenda),
