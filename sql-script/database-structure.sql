@@ -52,6 +52,7 @@ CREATE TABLE usuario(
     usuario VARCHAR(25) NOT NULL,
     email VARCHAR(100) NOT NULL,
     senha VARCHAR(255) NOT NULL,
+    administrador bool,
     fkEmpresa INT,
     fkFazenda INT,
 		CONSTRAINT pkEmpresaHasUsuario PRIMARY KEY (idUsuario, fkEmpresa),

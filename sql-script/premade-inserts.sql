@@ -22,11 +22,12 @@ INSERT INTO fazenda VALUE
     (DEFAULT, 'Tatuí',30,'18282899', 1),
     (DEFAULT, 'Jales',40,'15709899',1);
 
+
 -- usuarios da empresa
 INSERT INTO usuario VALUE 
-	(DEFAULT, 'Fernanda', 'fernanda.caramico@sptech.school', 'fe123', 1, NULL),
-    (DEFAULT, 'Julia', 'julia.ararip@sptech.school', 'ju123', 1, 1),
-	(DEFAULT, 'Fernando', 'fernando.souza@sptech.school', 'nando123', 1, 2);
+	(DEFAULT, 'Fernanda', 'fernanda.caramico@sptech.school', 'fe123', TRUE, 1, NULL),
+    (DEFAULT, 'Julia', 'julia.ararip@sptech.school', 'ju123', FALSE, 1, 1),
+	(DEFAULT, 'Fernando', 'fernando.souza@sptech.school', 'nando123', FALSE, 1, 2);
     -- Ordem das fk's: fkEmpresa em que trabalha, fkFazenda em que está gerenciando (caso seja o Root, será NULL),
 
 desc usuarioHasFazenda;
