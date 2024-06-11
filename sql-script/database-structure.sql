@@ -60,17 +60,6 @@ CREATE TABLE usuario(
 		CONSTRAINT fkUsuarioHasFazenda FOREIGN KEY (fkFazenda) REFERENCES fazenda(idFazenda)
 );
 
-
-CREATE TABLE usuarioHasFazenda (
-	idUsuarioHasFazenda INT AUTO_INCREMENT,
-    fkUsuario INT,
-    fkFazenda INT,
-		CONSTRAINT pkUsuarioFazenda PRIMARY KEY (idUsuarioHasFazenda, fkUsuario, fkFazenda),
-        CONSTRAINT fkRoot FOREIGN KEY (fkUsuario) REFERENCES usuario(idUsuario),
-        CONSTRAINT fkFazenda FOREIGN KEY (fkFazenda) REFERENCES fazenda(idFazenda)
-);
-
-
 -- parametros dos sensores em cada fazenda
 CREATE TABLE parametroFazenda(
 	idParametroFazenda INT AUTO_INCREMENT,

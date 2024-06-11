@@ -29,13 +29,6 @@ INSERT INTO usuario VALUE
     (DEFAULT, 'Julia', 'julia.ararip@sptech.school', 'ju123', FALSE, 1, 1),
 	(DEFAULT, 'Fernando', 'fernando.souza@sptech.school', 'nando123', FALSE, 1, 2);
     -- Ordem das fk's: fkEmpresa em que trabalha, fkFazenda em que está gerenciando (caso seja o Root, será NULL),
-
-desc usuarioHasFazenda;
-    -- Usuario das fazendas, um Usuario pode gerenciar muitas fazendas, e uma fazenda pode ser gerenciada por muitos Usuarios
-    INSERT INTO usuarioHasFazenda VALUE
-	(DEFAULT, 2,1),
-    (DEFAULT, 3,1);
-    -- id, Usuario, Fazenda
     
 -- parametros da fazenda 
 INSERT INTO parametroFazenda VALUE 
