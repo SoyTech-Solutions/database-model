@@ -114,7 +114,7 @@ join usuario on fkUsuario = idUsuario
 where idFazenda = 1 and idUsuario = 1;  -- NO BACKEND, FAZER ESSE CÓDIGO REPETIR PARA CADA FAZENDA EXISTENTE NO CADASTRO DO USUÁRIO
 */
 
--- Página das fazendas
+-- Página das fazendas INCOMPLETO
 
 SELECT dadoCapturado from sensorLog
 join sensor on fkSensor = idSensor
