@@ -78,12 +78,13 @@ CREATE TABLE sensor(
 	idSensor INT PRIMARY KEY AUTO_INCREMENT,
     tipo VARCHAR(5) NOT NULL,
 		CONSTRAINT chkTipo CHECK (tipo in('dht11','lm35')),
+	estado VARCHAR(10) NOT NULL,
+		CONSTRAINT chkEstado CHECK (estado in('ativo', 'inativo')),
 	eixoX INT,
     eixoY INT,
 	fkFazenda INT,
 		CONSTRAINT sensorHasFazenda FOREIGN KEY (fkFazenda) REFERENCES fazenda(idFazenda)
 );
-
 
 -- dados capturados 
 -- que pertence a algum sensor

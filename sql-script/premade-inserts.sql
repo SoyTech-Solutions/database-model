@@ -37,12 +37,12 @@ INSERT INTO parametroFazenda VALUE
     
 -- sensor que esta alocado dentro das fazendas
 INSERT INTO sensor VALUE
-	(DEFAULT, 'dht11', 5,5, 1),
-    (DEFAULT, 'lm35', 5,6, 1),
-	(DEFAULT, 'dht11', 5,5, 2),
-    (DEFAULT, 'lm35', 5,6, 2),
-	(DEFAULT, 'dht11', 5,5, 3),
-    (DEFAULT, 'lm35', 5,6, 3);
+	(DEFAULT, 'dht11', 'ativo', 5,5, 1),
+    (DEFAULT, 'lm35', 'ativo', 5,6, 1),
+	(DEFAULT, 'dht11', 'ativo', 5,5, 2),
+    (DEFAULT, 'lm35', 'ativo', 5,6, 2),
+	(DEFAULT, 'dht11', 'inativo', 5,5, 3),
+    (DEFAULT, 'lm35', 'inativo', 5,6, 3);
     
 INSERT INTO sensorLog VALUES
 	(DEFAULT, 35.50, '2024-04-12 23:39:30', 0, 1), --
